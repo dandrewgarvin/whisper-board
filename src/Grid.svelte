@@ -1,7 +1,7 @@
 <script>
   import config from "./config/config.json";
 
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   const dispatch = createEventDispatcher();
 
   export let grid;
@@ -90,6 +90,14 @@
       }
     });
   }
+
+  // scroll to the center of the div on mount
+  onMount(() => {
+    const gridElement = document.getElementById("grid");
+    const height = gridElement.clientHeight;
+    const width = gridElement.clientWidth;
+    gridElement.scrollTo(width / 2, height / 2);
+  });
 </script>
 
 <style lang="scss">
@@ -187,6 +195,7 @@
 
 <section
   class="Grid"
+  id="grid"
   style="grid-template-columns: repeat({config.columns}, 50px);">
   {#each $grid as row, rowInd}
     <div
