@@ -1,13 +1,16 @@
 <script>
   import config from "./config/config.json";
+  import StoreController from "./controllers/StoreController.js";
+
+  let store = new StoreController();
 
   import "./styles/reset.css";
 
-  import Grid, { removeFromGrid } from "./Grid.svelte";
+  import Grid from "./Grid.svelte";
   import Controls from "./Controls.svelte";
 
   function handleDeleteToken(evnt) {
-    removeFromGrid(evnt.detail.location);
+    store.removeFromGrid(evnt.detail.location);
   }
 
   const sizes = config.sizes;
@@ -23,6 +26,6 @@
 </style>
 
 <main class="App">
-  <Grid {sizes} />
+  <Grid {sizes} grid={store.grid} />
   <Controls on:message={handleDeleteToken} {sizes} />
 </main>

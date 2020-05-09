@@ -1,44 +1,6 @@
-<script context="module">
-  import { writable } from "svelte/store";
-  let tempGrid = [];
-
-  for (let i = 0; i < config.columns; i++) {
-    let row = [];
-
-    for (let j = 0; j < config.rows; j++) {
-      let cell = {
-        id: `c${i}:r${j}`,
-        col: i,
-        row: j,
-        content: null
-      };
-
-      row.push(cell);
-    }
-    tempGrid.push(row);
-  }
-
-  let grid = writable(tempGrid);
-
-  export function removeFromGrid(location) {
-    const split = location.split(":");
-
-    if (!split[0] || !split[1]) {
-      return;
-    }
-
-    const col = +split[0].replace(/[A-z]/, "");
-    const row = +split[1].replace(/[A-z]/, "");
-
-    grid.update(gd => {
-      gd[col][row].content = null;
-      return gd;
-    });
-  }
-</script>
-
 <script>
   import config from "./config/config.json";
+  export let grid;
 
   export let sizes;
 
