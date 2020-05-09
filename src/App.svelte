@@ -1,8 +1,10 @@
 <script>
   import config from "./config/config.json";
   import StoreController from "./controllers/StoreController.js";
+  import SocketController from "./controllers/SocketController.js";
 
-  let store = new StoreController();
+  const store = new StoreController();
+  const socket = new SocketController(store);
 
   import "./styles/reset.css";
 
@@ -15,14 +17,17 @@
     switch (type) {
       case "MOVE_TOKEN": {
         store.moveToken(payload);
+        socket.sendMovement(payload); // send message to all other players
         break;
       }
       case "DELETE_TOKEN": {
         store.removeFromGrid(payload);
+        socket.sendDelete(payload);
         break;
       }
-      case 'RESIZE_TOKEN': {
+      case "RESIZE_TOKEN": {
         store.resizeToken(payload);
+        socket.sendResize(payload);
         break;
       }
       default: {
