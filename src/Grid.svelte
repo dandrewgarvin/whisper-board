@@ -78,7 +78,8 @@
     grid.update(gd => {
       gd[targetCol][targetRow].content = {
         type: item_type,
-        size: evnt.dataTransfer.getData("size")
+        size: evnt.dataTransfer.getData("size"),
+        name: evnt.dataTransfer.getData("name")
       };
 
       return gd;
@@ -92,22 +93,24 @@
     // this is set so that the handleDragDrop function knows where the token is coming from so it can remove it
     evnt.dataTransfer.setData("fromLocation", evnt.target.dataset.location);
     evnt.dataTransfer.setData("size", evnt.target.dataset.size);
+    evnt.dataTransfer.setData("name", evnt.target.innerText);
   }
 
   function changeSize(evnt) {
-    const currentSize = evnt.target.dataset.size;
+    const currentSize = evnt.currentTarget.dataset.size;
 
-    const location = evnt.target.dataset.location;
+    const location = evnt.currentTarget.dataset.location;
     const col = +location.split(":")[0].replace(/[A-z]/, "");
     const row = +location.split(":")[1].replace(/[A-z]/, "");
 
     grid.update(gd => {
       gd[col][row].content = {
-        type: evnt.target.id,
+        type: evnt.currentTarget.id,
         size:
           sizes.indexOf(currentSize) + 1 < sizes.length
             ? sizes[sizes.indexOf(currentSize) + 1]
-            : sizes[0]
+            : sizes[0],
+        name: evnt.currentTarget.innerText
       };
 
       return gd;
@@ -145,8 +148,16 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          color: white;
+          text-align: center;
           position: absolute;
+
+          .name {
+            padding: 5px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: white;
+          }
 
           &[data-size="medium"] {
             height: calc(90% * 1) !important;
@@ -169,7 +180,7 @@
             width: calc(90% * 3) !important;
             left: calc(5% * 3);
             top: calc(5% * 3);
-            font-size: 18px;
+            font-size: 14px;
           }
 
           &[data-size="gargantuan"] {
@@ -177,7 +188,7 @@
             width: calc(90% * 4) !important;
             left: calc(5% * 4);
             top: calc(5% * 4);
-            font-size: 22px;
+            font-size: 14px;
           }
 
           &.character {
@@ -218,7 +229,7 @@
                 on:click={changeSize}
                 draggable="true"
                 on:dragstart={handleDragStart}>
-                {cell.content.size}
+                <p class="name">{cell.content.name}</p>
               </div>
             {:else}
               <div
@@ -229,7 +240,7 @@
                 on:click={changeSize}
                 draggable="true"
                 on:dragstart={handleDragStart}>
-                {cell.content.size}
+                <p class="name">{cell.content.name}</p>
               </div>
             {/if}
           {/if}

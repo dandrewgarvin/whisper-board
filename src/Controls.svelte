@@ -4,6 +4,7 @@
 
   export let sizes;
 
+  let input = "";
   let dropped_in = false;
   let dropped = [];
 
@@ -26,6 +27,9 @@
     evnt.dataTransfer.dropEffect = "move";
     evnt.dataTransfer.setData("text", evnt.target.id);
     evnt.dataTransfer.setData("size", sizes[0]);
+    evnt.dataTransfer.setData("name", input || evnt.target.id);
+
+    input = "";
   }
 </script>
 
@@ -42,6 +46,12 @@
       flex-direction: column;
       justify-content: flex-end;
       box-shadow: -3px 0px 5px 0px rgb(141, 149, 158);
+
+      .input {
+        margin: 5px;
+        outline: none;
+        border-radius: 4px;
+      }
 
       .btn {
         cursor: move;
@@ -69,6 +79,7 @@
 
 <section class="Controls">
   <div class="content">
+    <input class="input" placeholder="Token Name" bind:value={input} />
     <div
       class="btn"
       id="Character"

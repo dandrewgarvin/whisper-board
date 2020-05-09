@@ -1,4 +1,5 @@
 {
   "columns": 50,
-  "rows": 50
+  "rows": 50,
+  "sizes": ["medium", "large", "huge", "gargantuan"]
 }

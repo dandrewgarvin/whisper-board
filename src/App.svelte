@@ -1,5 +1,8 @@
 <script>
+  import config from "./config/config.json";
+
   import "./styles/reset.css";
+
   import Grid, { removeFromGrid } from "./Grid.svelte";
   import Controls from "./Controls.svelte";
 
@@ -7,7 +10,7 @@
     removeFromGrid(evnt.detail.location);
   }
 
-  const sizes = ["medium", "large", "huge", "gargantuan"];
+  const sizes = config.sizes;
 </script>
 
 <style lang="scss">
