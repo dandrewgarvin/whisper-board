@@ -83,6 +83,14 @@
     <input class="input" placeholder="Token Name" bind:value={input} />
     <div
       class="btn"
+      id="Enemy"
+      draggable="true"
+      on:dragstart={handleDragStart}>
+      + Enemy
+    </div>
+
+    <div
+      class="btn"
       id="Character"
       draggable="true"
       on:dragstart={handleDragStart}>

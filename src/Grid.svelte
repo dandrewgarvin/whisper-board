@@ -165,9 +165,14 @@
             font-size: 14px;
           }
 
-          &.character {
+          &.enemy {
             border-radius: 100%; // make circle
             background: rgb(124, 9, 9);
+          }
+
+          &.character {
+            border-radius: 100%; // make circle
+            background: rgb(11, 9, 124);
           }
 
           &.entity {
@@ -198,6 +203,17 @@
               <div
                 class="character token"
                 id="Character"
+                data-location="c{rowInd}:r{cellInd}"
+                data-size={cell.content.size}
+                on:click={changeSize}
+                draggable="true"
+                on:dragstart={handleDragStart}>
+                <p class="name">{cell.content.name}</p>
+              </div>
+            {:else if cell.content.type === 'Enemy'}
+              <div
+                class="enemy token"
+                id="Enemy"
                 data-location="c{rowInd}:r{cellInd}"
                 data-size={cell.content.size}
                 on:click={changeSize}
