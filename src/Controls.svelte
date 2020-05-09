@@ -2,6 +2,8 @@
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
+  export let sizes;
+
   let dropped_in = false;
   let dropped = [];
 
@@ -23,6 +25,7 @@
   function handleDragStart(evnt) {
     evnt.dataTransfer.dropEffect = "move";
     evnt.dataTransfer.setData("text", evnt.target.id);
+    evnt.dataTransfer.setData("size", sizes[0]);
   }
 </script>
 

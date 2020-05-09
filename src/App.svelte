@@ -6,6 +6,8 @@
   function handleDeleteToken(evnt) {
     removeFromGrid(evnt.detail.location);
   }
+
+  const sizes = ["medium", "large", "huge", "gargantuan"];
 </script>
 
 <style lang="scss">
@@ -18,6 +20,6 @@
 </style>
 
 <main class="App">
-  <Grid />
-  <Controls on:message={handleDeleteToken} />
+  <Grid {sizes} />
+  <Controls on:message={handleDeleteToken} {sizes} />
 </main>
