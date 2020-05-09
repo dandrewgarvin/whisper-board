@@ -46,6 +46,41 @@ class StoreController {
       return gd;
     });
   }
+
+  moveToken({ from, to, meta }) {
+    // delete old token location
+    if (from) {
+      this.grid.update((gd) => {
+        gd[from.col][from.row].content = null;
+        return gd;
+      });
+    }
+
+    // add new token location
+    this.grid.update((gd) => {
+      gd[to.col][to.row].content = {
+        type: meta.type,
+        size: meta.size,
+        name: meta.name,
+      };
+
+      return gd;
+    });
+  }
+
+  resizeToken({ col, row, size }) {
+    this.grid.update((gd) => {
+      const cell = gd[col][row];
+
+      gd[col][row].content = {
+        type: cell.content.type,
+        name: cell.content.name,
+        size,
+      };
+
+      return gd;
+    });
+  }
 }
 
 export default StoreController;

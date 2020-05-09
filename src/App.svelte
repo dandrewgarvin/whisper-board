@@ -9,8 +9,26 @@
   import Grid from "./Grid.svelte";
   import Controls from "./Controls.svelte";
 
-  function handleDeleteToken(evnt) {
-    store.removeFromGrid(evnt.detail.location);
+  function handleMessage(evnt) {
+    const { type, payload } = evnt.detail;
+
+    switch (type) {
+      case "MOVE_TOKEN": {
+        store.moveToken(payload);
+        break;
+      }
+      case "DELETE_TOKEN": {
+        store.removeFromGrid(payload);
+        break;
+      }
+      case 'RESIZE_TOKEN': {
+        store.resizeToken(payload);
+        break;
+      }
+      default: {
+        console.log("No message case found");
+      }
+    }
   }
 
   const sizes = config.sizes;
@@ -26,6 +44,6 @@
 </style>
 
 <main class="App">
-  <Grid {sizes} grid={store.grid} />
-  <Controls on:message={handleDeleteToken} {sizes} />
+  <Grid {sizes} grid={store.grid} on:message={handleMessage} />
+  <Controls on:message={handleMessage} {sizes} />
 </main>

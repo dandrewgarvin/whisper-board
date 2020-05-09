@@ -1,5 +1,6 @@
 {
   "columns": 50,
   "rows": 50,
-  "sizes": ["medium", "large", "huge", "gargantuan"]
+  "sizes": ["medium", "large", "huge", "gargantuan"],
+  "backend_url": "http://localhost:4000"
 }

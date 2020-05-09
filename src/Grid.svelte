@@ -1,5 +1,9 @@
 <script>
   import config from "./config/config.json";
+
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
+
   export let grid;
 
   export let sizes;
@@ -26,25 +30,34 @@
       return;
     }
 
-    // remove item from previous cell
+    let move = {
+      from: null,
+      to: {
+        col: targetCol,
+        row: targetRow
+      },
+      meta: {
+        type: item_type,
+        size: evnt.dataTransfer.getData("size"),
+        name: evnt.dataTransfer.getData("name")
+      }
+    };
+
+    // add a "from" location if needed
     if (fromLocation) {
       const fromCol = +fromSplit[0].replace(/[A-z]/, "");
       const fromRow = +fromSplit[1].replace(/[A-z]/, "");
 
-      grid.update(gd => {
-        gd[fromCol][fromRow].content = null;
-        return gd;
-      });
+      move.from = {
+        col: fromCol,
+        row: fromRow
+      };
     }
 
-    grid.update(gd => {
-      gd[targetCol][targetRow].content = {
-        type: item_type,
-        size: evnt.dataTransfer.getData("size"),
-        name: evnt.dataTransfer.getData("name")
-      };
-
-      return gd;
+    // call store function to actually move token
+    dispatch("message", {
+      type: "MOVE_TOKEN",
+      payload: move
     });
   }
 
@@ -65,17 +78,16 @@
     const col = +location.split(":")[0].replace(/[A-z]/, "");
     const row = +location.split(":")[1].replace(/[A-z]/, "");
 
-    grid.update(gd => {
-      gd[col][row].content = {
-        type: evnt.currentTarget.id,
+    dispatch("message", {
+      type: "RESIZE_TOKEN",
+      payload: {
+        col,
+        row,
         size:
           sizes.indexOf(currentSize) + 1 < sizes.length
             ? sizes[sizes.indexOf(currentSize) + 1]
-            : sizes[0],
-        name: evnt.currentTarget.innerText
-      };
-
-      return gd;
+            : sizes[0]
+      }
     });
   }
 </script>

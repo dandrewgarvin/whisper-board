@@ -18,7 +18,8 @@
 
     if (fromLocation) {
       dispatch("message", {
-        location: fromLocation
+        type: "DELETE_TOKEN",
+        payload: fromLocation
       });
     }
   }
