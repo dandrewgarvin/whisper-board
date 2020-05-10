@@ -1,10 +1,27 @@
 {
-  "name": "svelte-app",
+  "name": "whisper-board",
+  "description": "The grid-based socket.io whiteboard app for the DND campaign 'The Path of Whispers'",
+  "license": "GPL 2.0",
+  "private": false,
   "version": "1.0.0",
+  "author": {
+    "name": "Andrew Garvin",
+    "email": "me@andrewgarv.in",
+    "url": "https://andrewgarv.in"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dandrewgarvin/whisper-board"
+  },
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "start": "sirv public"
+  },
+  "dependencies": {
+    "sirv-cli": "^0.4.4",
+    "socket.io-client": "^2.3.0",
+    "svelte-preprocess": "^3.7.4"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "11.0.2",
@@ -17,10 +34,5 @@
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-terser": "^5.1.2",
     "svelte": "^3.0.0"
-  },
-  "dependencies": {
-    "sirv-cli": "^0.4.4",
-    "socket.io-client": "^2.3.0",
-    "svelte-preprocess": "^3.7.4"
   }
 }
