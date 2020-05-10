@@ -16,18 +16,18 @@
 
     switch (type) {
       case "MOVE_TOKEN": {
-        store.moveToken(payload);
-        socket.sendMovement(payload); // send message to all other players
+        store.moveToken(payload); // handle movement locally
+        socket.sendMovement(payload); // send movement to all other players
         break;
       }
       case "DELETE_TOKEN": {
-        store.removeFromGrid(payload);
-        socket.sendDelete(payload);
+        store.removeFromGrid(payload); // handle delete locally
+        socket.sendDelete(payload); // send delete to all other players
         break;
       }
       case "RESIZE_TOKEN": {
-        store.resizeToken(payload);
-        socket.sendResize(payload);
+        store.resizeToken(payload); // handle resize locally
+        socket.sendResize(payload); // send resize to all other players
         break;
       }
       default: {
