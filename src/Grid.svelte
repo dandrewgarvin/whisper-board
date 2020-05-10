@@ -132,6 +132,7 @@
           align-items: center;
           text-align: center;
           position: absolute;
+          transition: height 0.2s ease-in-out, width 0.2s ease-in-out;
 
           .name {
             padding: 5px;
