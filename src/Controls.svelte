@@ -42,11 +42,27 @@
     display: flex;
 
     .content {
+      position: relative;
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       box-shadow: -3px 0px 5px 0px rgb(141, 149, 158);
+
+      .logo-container {
+        height: 35px;
+        position: absolute;
+        top: 0px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+
+        img {
+          height: 100%;
+        }
+      }
 
       .input {
         margin: 5px;
@@ -80,12 +96,11 @@
 
 <section class="Controls">
   <div class="content">
+    <div class="logo-container">
+      <img src="images/logo.png" alt="logo" />
+    </div>
     <input class="input" placeholder="Token Name" bind:value={input} />
-    <div
-      class="btn"
-      id="Enemy"
-      draggable="true"
-      on:dragstart={handleDragStart}>
+    <div class="btn" id="Enemy" draggable="true" on:dragstart={handleDragStart}>
       + Enemy
     </div>
 
