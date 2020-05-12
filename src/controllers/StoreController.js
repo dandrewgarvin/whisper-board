@@ -51,6 +51,11 @@ class StoreController {
     // delete old token location
     if (from) {
       this.grid.update((gd) => {
+        // grid cells should not be able to overtake other grid cells
+        if (gd[to.col][to.row].content) {
+          return gd;
+        }
+
         gd[from.col][from.row].content = null;
         return gd;
       });
@@ -58,6 +63,11 @@ class StoreController {
 
     // add new token location
     this.grid.update((gd) => {
+      // grid cells should not be able to overtake other grid cells
+      if (gd[to.col][to.row].content) {
+        return gd;
+      }
+
       gd[to.col][to.row].content = {
         type: meta.type,
         size: meta.size,

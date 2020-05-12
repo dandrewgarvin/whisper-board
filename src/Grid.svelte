@@ -144,6 +144,14 @@
             color: white;
           }
 
+          &[data-size="small"] {
+            height: calc(90% / 1.5) !important;
+            width: calc(90% / 1.5) !important;
+            left: calc(5% * 4);
+            top: calc(5% * 4);
+            font-size: 6px;
+          }
+
           &[data-size="medium"] {
             height: calc(90% * 1) !important;
             width: calc(90% * 1) !important;

@@ -1,6 +1,6 @@
 {
   "columns": 50,
   "rows": 50,
-  "sizes": ["medium", "large", "huge", "gargantuan"],
+  "sizes": ["small", "medium", "large", "huge", "gargantuan"],
   "backend_url": "https://whisper-board-api.herokuapp.com/"
 }
