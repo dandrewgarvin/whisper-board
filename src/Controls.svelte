@@ -1,6 +1,8 @@
 <script>
-  import config from "./config/config.json";
   import { createEventDispatcher, onMount, onDestroy } from "svelte";
+
+  import config from "./config/config.json";
+
   const dispatch = createEventDispatcher();
 
   export let sizes;
@@ -285,6 +287,12 @@
           align-items: center;
           padding: 5px;
           flex: 1;
+
+          .img {
+            height: 20px;
+            width: 20px;
+            margin-right: 5px;
+          }
         }
 
         .dropzone {
@@ -348,7 +356,8 @@
           id="Party"
           draggable="true"
           on:dragstart={handleDragStart}>
-          + Party
+          <img src="images/party.png" alt="party" class="img" />
+          Party
         </div>
 
         <div
@@ -356,7 +365,8 @@
           id="Enemy"
           draggable="true"
           on:dragstart={handleDragStart}>
-          + Enemy
+          <img src="images/goblin.png" alt="enemy" class="img" />
+          Enemy
         </div>
       </div>
 
@@ -366,7 +376,8 @@
           id="Character"
           draggable="true"
           on:dragstart={handleDragStart}>
-          + Character
+          <img src="images/character.png" alt="character" class="img" />
+          Character
         </div>
 
         <div
@@ -374,7 +385,8 @@
           id="Entity"
           draggable="true"
           on:dragstart={handleDragStart}>
-          + Entity
+          <img src="images/tree.png" alt="entity" class="img" />
+          Entity
         </div>
       </div>
 
