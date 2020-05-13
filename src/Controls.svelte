@@ -87,7 +87,7 @@
     let token;
 
     try {
-      token = JSON.parse(evnt.target.id);
+      token = JSON.parse(evnt.currentTarget.id);
     } catch {
       // console.log("unable to parse token");
     }

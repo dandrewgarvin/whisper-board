@@ -88,7 +88,8 @@
         size:
           sizes.indexOf(currentSize) + 1 < sizes.length
             ? sizes[sizes.indexOf(currentSize) + 1]
-            : sizes[0]
+            : sizes[0],
+        color: evnt.currentTarget.dataset.color
       }
     });
   }

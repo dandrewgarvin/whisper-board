@@ -180,7 +180,7 @@ class StoreController {
     });
   }
 
-  resizeToken({ col, row, size }) {
+  resizeToken({ col, row, size, color }) {
     this.grid.update((gd) => {
       const cell = gd[col][row];
 
@@ -188,6 +188,7 @@ class StoreController {
         type: cell.content.type,
         name: cell.content.name,
         size,
+        color,
       };
 
       return gd;
