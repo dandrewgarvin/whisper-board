@@ -1,4 +1,5 @@
 <script>
+  import config from "./config/config.json";
   import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
@@ -7,8 +8,11 @@
   let input = "";
   let dropped_in = false;
   let dropped = [];
+  let draggedOver = false;
 
   function handleDragDrop(evnt) {
+    draggedOver = false;
+
     evnt.preventDefault();
     dropped_in = true;
     dropped.push(evnt.target.id);
@@ -26,9 +30,15 @@
 
   function handleDragStart(evnt) {
     evnt.dataTransfer.dropEffect = "move";
-    evnt.dataTransfer.setData("text", evnt.target.id);
-    evnt.dataTransfer.setData("size", sizes[0]);
+    evnt.dataTransfer.setData("text", evnt.target.id); // type of token
+    evnt.dataTransfer.setData("size", sizes[1]); // default size is medium
     evnt.dataTransfer.setData("name", input || evnt.target.id);
+
+    // set random background color for non-party character tokens
+    if (evnt.target.id === "Character") {
+      const colorIndex = Math.floor(Math.random() * config.randomColors.length);
+      evnt.dataTransfer.setData("color", config.randomColors[colorIndex]);
+    }
 
     input = "";
   }
@@ -89,6 +99,10 @@
         background: rgb(124, 138, 150);
         color: white;
         cursor: unset;
+
+        &.draggedOver {
+          background: rgb(79, 91, 100);
+        }
       }
     }
   }
@@ -99,6 +113,10 @@
     <div class="logo-container">
       <img src="images/logo.png" alt="logo" />
     </div>
+    <div class="btn" id="Party" draggable="true" on:dragstart={handleDragStart}>
+      + Party
+    </div>
+
     <input class="input" placeholder="Token Name" bind:value={input} />
     <div class="btn" id="Enemy" draggable="true" on:dragstart={handleDragStart}>
       + Enemy
@@ -111,6 +129,7 @@
       on:dragstart={handleDragStart}>
       + Character
     </div>
+
     <div
       class="btn"
       id="Entity"
@@ -120,8 +139,10 @@
     </div>
 
     <div
-      class="btn dropzone"
+      class="btn dropzone {draggedOver ? 'draggedOver' : ''}"
       on:drop={handleDragDrop}
+      on:dragenter={() => (draggedOver = true)}
+      on:dragleave={() => (draggedOver = false)}
       ondragover="return false">
       Drag Here To Delete
     </div>

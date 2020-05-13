@@ -39,7 +39,8 @@
       meta: {
         type: item_type,
         size: evnt.dataTransfer.getData("size"),
-        name: evnt.dataTransfer.getData("name")
+        name: evnt.dataTransfer.getData("name"),
+        color: evnt.dataTransfer.getData("color") || null
       }
     };
 
@@ -69,6 +70,7 @@
     evnt.dataTransfer.setData("fromLocation", evnt.target.dataset.location);
     evnt.dataTransfer.setData("size", evnt.target.dataset.size);
     evnt.dataTransfer.setData("name", evnt.target.innerText);
+    evnt.dataTransfer.setData("color", evnt.target.dataset.color);
   }
 
   function changeSize(evnt) {
@@ -225,9 +227,11 @@
                 id="Character"
                 data-location="c{rowInd}:r{cellInd}"
                 data-size={cell.content.size}
+                data-color={cell.content.color}
                 on:click={changeSize}
                 draggable="true"
-                on:dragstart={handleDragStart}>
+                on:dragstart={handleDragStart}
+                style="background: {cell.content.color};">
                 <p class="name">{cell.content.name}</p>
               </div>
             {:else if cell.content.type === 'Enemy'}

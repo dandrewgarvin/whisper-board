@@ -2,5 +2,48 @@
   "columns": 50,
   "rows": 50,
   "sizes": ["small", "medium", "large", "huge", "gargantuan"],
-  "backend_url": "https://whisper-board-api.herokuapp.com/"
+  "backend_url": "https://whisper-board-api.herokuapp.com/",
+  "party": [
+    {
+      "name": "Tymor",
+      "size": "small",
+      "type": "Character",
+      "color": "#ff5733"
+    },
+    {
+      "name": "Zelgius",
+      "size": "medium",
+      "type": "Character",
+      "color": "#d1bd04"
+    },
+    {
+      "name": "Fermin",
+      "size": "medium",
+      "type": "Character",
+      "color": "#24b510"
+    },
+    {
+      "name": "Adrian",
+      "size": "medium",
+      "type": "Character",
+      "color": "#ba040d"
+    },
+    {
+      "name": "Aressius",
+      "size": "medium",
+      "type": "Character",
+      "color": "#17647F"
+    }
+  ],
+  "randomColors": [
+    "#8dc951",
+    "#800D05",
+    "#bdb131",
+    "#6721ad",
+    "#6fccd6",
+    "#6fe8a2",
+    "#ebe86a",
+    "#ebb36a",
+    "#8404d4"
+  ]
 }
