@@ -96,9 +96,10 @@
   // scroll to the center of the div on mount
   onMount(() => {
     const gridElement = document.getElementById("grid");
-    const height = gridElement.clientHeight;
-    const width = gridElement.clientWidth;
-    gridElement.scrollTo(width / 2, height / 2);
+    const height = gridElement.scrollHeight / 2 - gridElement.clientHeight / 2;
+    const width = gridElement.scrollWidth / 2 - gridElement.clientWidth / 2;
+
+    gridElement.scrollTo(width, height);
   });
 </script>
 
