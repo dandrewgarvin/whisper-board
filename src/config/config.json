@@ -2,7 +2,7 @@
   "columns": 50,
   "rows": 50,
   "sizes": ["small", "medium", "large", "huge", "gargantuan"],
-  "backend_url": "https://whisper-board-api.herokuapp.com/",
+  "backend_url": "localhost:4000",
   "party": [
     {
       "name": "Tymor",

@@ -7,6 +7,7 @@ class StoreController {
     let grid = this.generateInitialGrid();
 
     this.grid = writable(grid);
+    this.tokens = writable([]);
   }
 
   generateInitialGrid() {
@@ -31,6 +32,21 @@ class StoreController {
     return grid;
   }
 
+  fillEmptyGrid(tokens) {
+    this.grid.set(this.generateInitialGrid());
+
+    this.grid.update((gd) => {
+      tokens.forEach((token) => {
+        const { position } = token;
+        delete token.position;
+
+        gd[position.col][position.row].content = token;
+      });
+
+      return gd;
+    });
+  }
+
   removeFromGrid(location) {
     const split = location.split(":");
 
@@ -44,6 +60,18 @@ class StoreController {
     this.grid.update((gd) => {
       gd[col][row].content = null;
       return gd;
+    });
+
+    this.tokens.update((tokens) => {
+      tokens = tokens.filter((tkn) => {
+        if (tkn.position.col === col && tkn.position.row === row) {
+          return false;
+        }
+
+        return true;
+      });
+
+      return tokens;
     });
   }
 
@@ -120,6 +148,30 @@ class StoreController {
 
       return gd;
     });
+
+    this.tokens.update((tokens) => {
+      if (from) {
+        // update existing token in list
+        tokens = tokens.map((tkn) => {
+          if (tkn.position.col === from.col && tkn.position.row === from.row) {
+            return {
+              ...meta,
+              position: to,
+            };
+          } else {
+            return tkn;
+          }
+        });
+      } else {
+        // add new token to list
+        tokens.push({
+          ...meta,
+          position: to,
+        });
+      }
+
+      return tokens;
+    });
   }
 
   resizeToken({ col, row, size }) {
@@ -133,6 +185,18 @@ class StoreController {
       };
 
       return gd;
+    });
+
+    this.tokens.update((tokens) => {
+      tokens = tokens.map((tkn) => {
+        if (tkn.position.col === col && tkn.position.row === row) {
+          tkn.size = size;
+        }
+
+        return tkn;
+      });
+
+      return tokens;
     });
   }
 }
