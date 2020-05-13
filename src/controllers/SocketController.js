@@ -21,11 +21,13 @@ class SocketController {
     this.socket.on("resized", (payload) => {
       store.resizeToken(payload);
     });
+
+    this.socket.on("renamed", (payload) => {
+      store.renameToken(payload);
+    });
   }
 
   sendMovement(payload) {
-    console.log("payload", payload);
-
     // handle party button
     if (payload.meta.type === "Party") {
       const party = config.party;
@@ -75,6 +77,10 @@ class SocketController {
 
   sendResize(payload) {
     this.socket.emit("resize", payload);
+  }
+
+  sendRename(payload) {
+    this.socket.emit("rename", payload);
   }
 }
 

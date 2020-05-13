@@ -206,8 +206,33 @@ class StoreController {
     });
   }
 
-  handleHoveringToken(payload) {
-    this.hoveringToken.set(payload);
+  handleHoveringToken(token) {
+    this.hoveringToken.set(token);
+  }
+
+  renameToken({ position, name }) {
+    // update this.tokens
+    this.tokens.update((tokens) => {
+      tokens = tokens.map((tkn) => {
+        if (
+          tkn.position.col === position.col &&
+          tkn.position.row === position.row
+        ) {
+          tkn.name = name;
+        }
+
+        return tkn;
+      });
+
+      return tokens;
+    });
+
+    // update this.grid
+    this.grid.update((gd) => {
+      gd[position.col][position.row].content.name = name;
+
+      return gd;
+    });
   }
 }
 

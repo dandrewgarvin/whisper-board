@@ -11,7 +11,7 @@
   let dropped_in = false;
   let dropped = [];
   let draggedOver = false;
-  let hovering = undefined;
+  let clickedToken = undefined;
 
   function handleDragDrop(evnt) {
     draggedOver = false;
@@ -59,17 +59,75 @@
       return null;
     }
 
+    if (!clickedToken) {
+      dispatch("message", {
+        type: "CHANGE_HOVERING_TOKEN",
+        payload: token
+      });
+    }
+  }
+
+  function handleTokenLeave(evnt) {
+    if (!clickedToken) {
+      dispatch("message", {
+        type: "CHANGE_HOVERING_TOKEN",
+        payload: null
+      });
+    }
+  }
+
+  function handleTokenClick(evnt) {
+    let token;
+
+    try {
+      token = JSON.parse(evnt.target.id);
+    } catch {
+      // console.log("unable to parse token");
+    }
+
+    if (!token) {
+      return null;
+    }
+
+    if (
+      clickedToken &&
+      clickedToken.position.col === token.position.col &&
+      clickedToken.position.row === token.position.row
+    ) {
+      clickedToken = undefined;
+      input = "";
+      return;
+    }
+
     dispatch("message", {
       type: "CHANGE_HOVERING_TOKEN",
       payload: token
     });
+
+    clickedToken = token;
+    input = token.name;
+
+    document.getElementById("token-name-input").focus();
   }
 
-  function handleTokenLeave(evnt) {
-    dispatch("message", {
-      type: "CHANGE_HOVERING_TOKEN",
-      payload: null
-    });
+  function handleInput(evnt) {
+    if (clickedToken && evnt.key === "Enter") {
+      dispatch("message", {
+        type: "RENAME_TOKEN",
+        payload: {
+          position: clickedToken.position,
+          name: input
+        }
+      });
+
+      clickedToken = undefined;
+      input = "";
+
+      dispatch("message", {
+        type: "CHANGE_HOVERING_TOKEN",
+        payload: null
+      });
+    }
   }
 </script>
 
@@ -116,7 +174,8 @@
           align-items: center;
           cursor: pointer;
 
-          &:hover {
+          &:hover,
+          &.hovered {
             background: rgb(163, 174, 187);
           }
 
@@ -221,10 +280,11 @@
         return 0;
       }) as token}
         <div
-          class="token"
+          class="token {clickedToken && clickedToken.position.col === token.position.col && clickedToken.position.row === token.position.row ? 'hovered' : ''}"
           id={JSON.stringify(token)}
           on:mouseenter={handleTokenEnter}
-          on:mouseleave={handleTokenLeave}>
+          on:mouseleave={handleTokenLeave}
+          on:click={handleTokenClick}>
           {#if token.type === 'Character'}
             <div class="color character" style="background: {token.color}" />
           {:else if token.type === 'Enemy'}
@@ -239,7 +299,12 @@
     </div>
 
     <div class="actions">
-      <input class="input" placeholder="Token Name" bind:value={input} />
+      <input
+        class="input"
+        id="token-name-input"
+        placeholder="Token Name"
+        bind:value={input}
+        on:keydown={handleInput} />
 
       <div class="row">
         <div

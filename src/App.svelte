@@ -34,6 +34,11 @@
         store.handleHoveringToken(payload);
         break;
       }
+      case "RENAME_TOKEN": {
+        store.renameToken(payload); // handle rename locally
+        socket.sendRename(payload); // handle rename to all other players
+        break;
+      }
       default: {
         console.log("No message case found");
       }
