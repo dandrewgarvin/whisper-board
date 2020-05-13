@@ -356,7 +356,11 @@
           id="Party"
           draggable="true"
           on:dragstart={handleDragStart}>
-          <img src="images/party.png" alt="party" class="img" />
+          <img
+            draggable="false"
+            src="images/party.png"
+            alt="party"
+            class="img" />
           Party
         </div>
 
@@ -365,7 +369,11 @@
           id="Enemy"
           draggable="true"
           on:dragstart={handleDragStart}>
-          <img src="images/goblin.png" alt="enemy" class="img" />
+          <img
+            draggable="false"
+            src="images/goblin.png"
+            alt="enemy"
+            class="img" />
           Enemy
         </div>
       </div>
@@ -376,7 +384,11 @@
           id="Character"
           draggable="true"
           on:dragstart={handleDragStart}>
-          <img src="images/character.png" alt="character" class="img" />
+          <img
+            draggable="false"
+            src="images/character.png"
+            alt="character"
+            class="img" />
           Character
         </div>
 
@@ -385,7 +397,11 @@
           id="Entity"
           draggable="true"
           on:dragstart={handleDragStart}>
-          <img src="images/tree.png" alt="entity" class="img" />
+          <img
+            draggable="false"
+            src="images/tree.png"
+            alt="entity"
+            class="img" />
           Entity
         </div>
       </div>
