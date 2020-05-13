@@ -4,11 +4,13 @@
   const dispatch = createEventDispatcher();
 
   export let sizes;
+  export let tokens;
 
   let input = "";
   let dropped_in = false;
   let dropped = [];
   let draggedOver = false;
+  let hovering = undefined;
 
   function handleDragDrop(evnt) {
     draggedOver = false;
@@ -42,6 +44,12 @@
 
     input = "";
   }
+
+  function handleTokenHover(evnt) {
+    const token = JSON.parse(evnt.target.id);
+
+    console.log("evnt", token);
+  }
 </script>
 
 <style lang="scss">
@@ -61,8 +69,6 @@
 
       .logo-container {
         height: 35px;
-        position: absolute;
-        top: 0px;
         width: 100%;
         display: flex;
         justify-content: center;
@@ -74,34 +80,107 @@
         }
       }
 
-      .input {
-        margin: 5px;
-        outline: none;
-        border-radius: 4px;
+      .list {
+        width: 100%;
+        flex: 1;
+        overflow: scroll;
+        margin-bottom: 50px;
+
+        .token {
+          margin: 0px 5px;
+          padding: 0px 5px;
+          max-width: 100%;
+          height: 35px;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+
+          &:hover {
+            background: rgb(163, 174, 187);
+          }
+
+          .color {
+            height: 20px;
+            width: 20px;
+            border-radius: 100%;
+            margin-right: 10px;
+
+            &.character {
+              background: rgb(11, 9, 124);
+            }
+
+            &.enemy {
+              background: rgb(124, 9, 9);
+            }
+
+            &.entity {
+              background: rgb(5, 77, 17);
+            }
+          }
+
+          .name {
+            font-size: 14px;
+          }
+        }
+
+        .token + .token {
+          border-top: 1px solid rgb(107, 107, 126);
+        }
       }
 
-      .btn {
-        cursor: move;
-        height: 30px;
-        background: white;
-        border-radius: 8px;
-        margin: 5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 5px;
-        width: 120px;
-      }
+      .actions {
+        width: 100%;
 
-      .dropzone {
-        width: calc(100% - 20px);
-        height: 80px;
-        background: rgb(124, 138, 150);
-        color: white;
-        cursor: unset;
+        .input {
+          margin: 0px 5px;
+          outline: none;
+          border-radius: 4px;
+          width: calc(100% - 10px);
+        }
 
-        &.draggedOver {
-          background: rgb(79, 91, 100);
+        .row {
+          display: flex;
+        }
+
+        .colorized.party {
+          background: rgb(255, 175, 28);
+        }
+        .colorized.enemy {
+          background: rgb(124, 9, 9);
+          color: white;
+        }
+        .colorized.character {
+          background: rgb(11, 9, 124);
+          color: white;
+        }
+        .colorized.entity {
+          background: rgb(5, 77, 17);
+          color: white;
+        }
+
+        .btn {
+          cursor: move;
+          height: 30px;
+          background: white;
+          border-radius: 8px;
+          margin: 5px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 5px;
+          width: 120px;
+        }
+
+        .dropzone {
+          width: calc(100% - 20px);
+          height: 80px;
+          background: rgb(124, 138, 150);
+          color: white;
+          cursor: unset;
+
+          &.draggedOver {
+            background: rgb(79, 91, 100);
+          }
         }
       }
     }
@@ -113,38 +192,77 @@
     <div class="logo-container">
       <img src="images/logo.png" alt="logo" />
     </div>
-    <div class="btn" id="Party" draggable="true" on:dragstart={handleDragStart}>
-      + Party
+
+    <div class="list">
+      {#each $tokens.sort((a, b) => {
+        if (a.name > b.name) return 1;
+        else if (a.name < b.name) return -1;
+        return 0;
+      }) as token}
+        <div
+          class="token"
+          id={JSON.stringify(token)}
+          on:mouseover={handleTokenHover}>
+          {#if token.type === 'Character'}
+            <div class="color character" style="background: {token.color}" />
+          {:else if token.type === 'Enemy'}
+            <div class="color enemy" />
+          {:else}
+            <div class="color entity" />
+          {/if}
+
+          <p class="name">{token.name}</p>
+        </div>
+      {/each}
     </div>
 
-    <input class="input" placeholder="Token Name" bind:value={input} />
-    <div class="btn" id="Enemy" draggable="true" on:dragstart={handleDragStart}>
-      + Enemy
-    </div>
+    <div class="actions">
+      <input class="input" placeholder="Token Name" bind:value={input} />
 
-    <div
-      class="btn"
-      id="Character"
-      draggable="true"
-      on:dragstart={handleDragStart}>
-      + Character
-    </div>
+      <div class="row">
+        <div
+          class="btn colorized party"
+          id="Party"
+          draggable="true"
+          on:dragstart={handleDragStart}>
+          + Party
+        </div>
 
-    <div
-      class="btn"
-      id="Entity"
-      draggable="true"
-      on:dragstart={handleDragStart}>
-      + Entity
-    </div>
+        <div
+          class="btn colorized enemy"
+          id="Enemy"
+          draggable="true"
+          on:dragstart={handleDragStart}>
+          + Enemy
+        </div>
+      </div>
 
-    <div
-      class="btn dropzone {draggedOver ? 'draggedOver' : ''}"
-      on:drop={handleDragDrop}
-      on:dragenter={() => (draggedOver = true)}
-      on:dragleave={() => (draggedOver = false)}
-      ondragover="return false">
-      Drag Here To Delete
+      <div class="row">
+        <div
+          class="btn colorized character"
+          id="Character"
+          draggable="true"
+          on:dragstart={handleDragStart}>
+          + Character
+        </div>
+
+        <div
+          class="btn colorized entity"
+          id="Entity"
+          draggable="true"
+          on:dragstart={handleDragStart}>
+          + Entity
+        </div>
+      </div>
+
+      <div
+        class="btn dropzone {draggedOver ? 'draggedOver' : ''}"
+        on:drop={handleDragDrop}
+        on:dragenter={() => (draggedOver = true)}
+        on:dragleave={() => (draggedOver = false)}
+        ondragover="return false">
+        Drag Here To Delete
+      </div>
     </div>
   </div>
 </section>

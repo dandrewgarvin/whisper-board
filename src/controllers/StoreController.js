@@ -45,6 +45,12 @@ class StoreController {
 
       return gd;
     });
+
+    this.tokens.update((tkns) => {
+      tkns = tokens;
+
+      return tkns;
+    });
   }
 
   removeFromGrid(location) {

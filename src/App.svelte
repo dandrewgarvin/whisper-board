@@ -50,5 +50,5 @@
 
 <main class="App">
   <Grid {sizes} grid={store.grid} on:message={handleMessage} />
-  <Controls on:message={handleMessage} {sizes} />
+  <Controls on:message={handleMessage} {sizes} tokens={store.tokens} />
 </main>

@@ -4,6 +4,7 @@ import config from "../config/config.json";
 class SocketController {
   constructor(store) {
     this.socket = io.connect(config.backend_url);
+    this.store = store;
 
     this.socket.on("startup", (payload) => {
       store.fillEmptyGrid(payload);
@@ -28,8 +29,6 @@ class SocketController {
     // handle party button
     if (payload.meta.type === "Party") {
       const party = config.party;
-
-      let payloads = [];
 
       // don't support parties that have over 9 members
       if (party.length > 9) {
@@ -62,6 +61,7 @@ class SocketController {
           meta: mem,
         };
 
+        this.store.moveToken(tempPayload);
         this.socket.emit("move", tempPayload);
       });
     } else {
