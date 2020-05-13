@@ -5,6 +5,7 @@
 
   export let sizes;
   export let tokens;
+  export let hoveringToken;
 
   let input = "";
   let dropped_in = false;
@@ -45,10 +46,30 @@
     input = "";
   }
 
-  function handleTokenHover(evnt) {
-    const token = JSON.parse(evnt.target.id);
+  function handleTokenEnter(evnt) {
+    let token;
 
-    console.log("evnt", token);
+    try {
+      token = JSON.parse(evnt.target.id);
+    } catch {
+      // console.log("unable to parse token");
+    }
+
+    if (!token || !token.position) {
+      return null;
+    }
+
+    dispatch("message", {
+      type: "CHANGE_HOVERING_TOKEN",
+      payload: token
+    });
+  }
+
+  function handleTokenLeave(evnt) {
+    dispatch("message", {
+      type: "CHANGE_HOVERING_TOKEN",
+      payload: null
+    });
   }
 </script>
 
@@ -202,7 +223,8 @@
         <div
           class="token"
           id={JSON.stringify(token)}
-          on:mouseover={handleTokenHover}>
+          on:mouseenter={handleTokenEnter}
+          on:mouseleave={handleTokenLeave}>
           {#if token.type === 'Character'}
             <div class="color character" style="background: {token.color}" />
           {:else if token.type === 'Enemy'}

@@ -8,6 +8,7 @@ class StoreController {
 
     this.grid = writable(grid);
     this.tokens = writable([]);
+    this.hoveringToken = writable(null);
   }
 
   generateInitialGrid() {
@@ -38,7 +39,6 @@ class StoreController {
     this.grid.update((gd) => {
       tokens.forEach((token) => {
         const { position } = token;
-        delete token.position;
 
         gd[position.col][position.row].content = token;
       });
@@ -204,6 +204,10 @@ class StoreController {
 
       return tokens;
     });
+  }
+
+  handleHoveringToken(payload) {
+    this.hoveringToken.set(payload);
   }
 }
 

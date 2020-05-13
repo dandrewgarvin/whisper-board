@@ -30,6 +30,10 @@
         socket.sendResize(payload); // send resize to all other players
         break;
       }
+      case "CHANGE_HOVERING_TOKEN": {
+        store.handleHoveringToken(payload);
+        break;
+      }
       default: {
         console.log("No message case found");
       }
@@ -49,6 +53,14 @@
 </style>
 
 <main class="App">
-  <Grid {sizes} grid={store.grid} on:message={handleMessage} />
-  <Controls on:message={handleMessage} {sizes} tokens={store.tokens} />
+  <Grid
+    {sizes}
+    grid={store.grid}
+    on:message={handleMessage}
+    hoveringToken={store.hoveringToken} />
+  <Controls
+    {sizes}
+    tokens={store.tokens}
+    on:message={handleMessage}
+    hoveringToken={store.hoveringToken} />
 </main>

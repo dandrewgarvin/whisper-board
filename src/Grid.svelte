@@ -5,8 +5,8 @@
   const dispatch = createEventDispatcher();
 
   export let grid;
-
   export let sizes;
+  export let hoveringToken;
 
   function handleDragDrop(evnt) {
     evnt.preventDefault();
@@ -122,6 +122,15 @@
         width: 50px;
         overflow: visible;
 
+        &.hovered {
+          background: rgb(255, 0, 0);
+
+          .token {
+            border: 1px solid rgb(0, 0, 0);
+            box-sizing: border-box;
+          }
+        }
+
         .token {
           cursor: move;
           height: 90%;
@@ -210,13 +219,13 @@
   class="Grid"
   id="grid"
   style="grid-template-columns: repeat({config.columns}, 50px);">
-  {#each $grid as row, rowInd}
+  {#each $grid as row, colInd}
     <div
       class="grid-column"
       style="grid-template-rows: repeat({config.rows}, 50px);">
-      {#each row as cell, cellInd}
+      {#each row as cell, rowInd}
         <div
-          class="grid-cell"
+          class="grid-cell {$hoveringToken && $hoveringToken.position && $hoveringToken.position.col === colInd && $hoveringToken.position.row === rowInd ? 'hovered' : ''}"
           id={cell.id}
           on:drop={handleDragDrop}
           ondragover="return false">
@@ -225,7 +234,7 @@
               <div
                 class="character token"
                 id="Character"
-                data-location="c{rowInd}:r{cellInd}"
+                data-location="c{colInd}:r{rowInd}"
                 data-size={cell.content.size}
                 data-color={cell.content.color}
                 on:click={changeSize}
@@ -238,7 +247,7 @@
               <div
                 class="enemy token"
                 id="Enemy"
-                data-location="c{rowInd}:r{cellInd}"
+                data-location="c{colInd}:r{rowInd}"
                 data-size={cell.content.size}
                 on:click={changeSize}
                 draggable="true"
@@ -249,7 +258,7 @@
               <div
                 class="entity token"
                 id="Entity"
-                data-location="c{rowInd}:r{cellInd}"
+                data-location="c{colInd}:r{rowInd}"
                 data-size={cell.content.size}
                 on:click={changeSize}
                 draggable="true"
