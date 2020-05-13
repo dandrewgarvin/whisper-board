@@ -1,6 +1,6 @@
 <script>
   import config from "./config/config.json";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount, onDestroy } from "svelte";
   const dispatch = createEventDispatcher();
 
   export let sizes;
@@ -27,6 +27,11 @@
       dispatch("message", {
         type: "DELETE_TOKEN",
         payload: fromLocation
+      });
+
+      dispatch("message", {
+        type: "CHANGE_HOVERING_TOKEN",
+        payload: null
       });
     }
   }
@@ -107,7 +112,7 @@
     clickedToken = token;
     input = token.name;
 
-    document.getElementById("token-name-input").focus();
+    // document.getElementById("token-name-input").focus();
   }
 
   function handleInput(evnt) {
@@ -129,6 +134,37 @@
       });
     }
   }
+
+  function handleKeyboardShortcuts(evnt) {
+    const inputField = document.getElementById("token-name-input");
+
+    if (document.activeElement === inputField) {
+      return null;
+    }
+
+    if (clickedToken && ["Backspace", "Delete"].includes(evnt.key)) {
+      dispatch("message", {
+        type: "DELETE_TOKEN",
+        payload: `c${clickedToken.position.col}:r${clickedToken.position.row}`
+      });
+
+      dispatch("message", {
+        type: "CHANGE_HOVERING_TOKEN",
+        payload: null
+      });
+
+      input = "";
+      clickedToken = undefined;
+    }
+  }
+
+  onMount(() => {
+    window.addEventListener("keydown", handleKeyboardShortcuts);
+  });
+
+  onDestroy(() => {
+    window.removeEventListener("keydown", handleKeyboardShortcuts);
+  });
 </script>
 
 <style lang="scss">
@@ -248,7 +284,7 @@
           justify-content: center;
           align-items: center;
           padding: 5px;
-          width: 120px;
+          flex: 1;
         }
 
         .dropzone {
